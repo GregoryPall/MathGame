@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Défi des Quatre Maisons - Maths</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
+            color: #2d3748;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d4ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .welcome-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .houses-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .houses-section h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2d3748;
+            font-size: 1.2em;
+        }
+
+        .house-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .house-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .house-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .house-card:hover::before {
+            opacity: 0.15;
+        }
+
+        .house-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .house-card.phoenix { 
+            border-color: #ff3366;
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.05), rgba(255, 107, 107, 0.03));
+        }
+        .house-card.phoenix:hover { 
+            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
+        }
+        
+        .house-card.axiome { 
+            border-color: #00d4ff;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(64, 224, 208, 0.03));
+        }
+        .house-card.axiome:hover { 
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .house-card.nebula { 
+            border-color: #7b2ff7;
+            background: linear-gradient(135deg, rgba(123, 47, 247, 0.05), rgba(138, 43, 226, 0.03));
+        }
+        .house-card.nebula:hover { 
+            box-shadow: 0 8px 20px rgba(123, 47, 247, 0.3);
+        }
+        
+        .house-card.zenith { 
+            border-color: #ffa500;
+            background: linear-gradient(135deg, rgba(255, 165, 0, 0.05), rgba(255, 193, 7, 0.03));
+        }
+        .house-card.zenith:hover { 
+            box-shadow: 0 8px 20px rgba(255, 165, 0, 0.3);
+        }
+
+        .house-icon {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+        }
+
+        .house-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2d3748;
+        }
+
+        .house-motto {
+            font-size: 0.75em;
+            margin: 5px 0;
+        }
+
+        .house-score {
+            color: #718096;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            background: #f7fafc;
+            color: #2d3748;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: white;
+        }
+
+        input[type="text"]::placeholder {
+            color: #a0aec0;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(45deg, #00d4ff, #7b2ff7);
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+
+        .question-number {
+            font-size: 1.2em;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .timer {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ff3366;
+        }
+
+        .combo-display {
+            text-align: center;
+            padding: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            border-radius: 10px;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #00d4ff;
+            color: #2d3748;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e2e8f0;
+            color: #2d3748;
+        }
+
+        .option:hover {
+            background: #edf2f7;
+            border-color: #00d4ff;
+        }
+
+        .option.selected {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: #00d4ff;
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            background: #f7fafc;
+            color: #2d3748;
+            font-size: 1.3em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: white;
+        }
+
+        .results-container {
+            margin-top: 30px;
+        }
+
+        .result-item {
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background: #f7fafc;
+            border-left: 4px solid;
+        }
+
+        .result-item.correct {
+            border-left-color: #48bb78;
+            background: rgba(72, 187, 120, 0.1);
+        }
+
+        .result-item.incorrect {
+            border-left-color: #f56565;
+            background: rgba(245, 101, 101, 0.1);
+        }
+
+        .result-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .result-answer {
+            color: #4a5568;
+            font-size: 0.95em;
+        }
+
+        .final-score {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(45deg, #00d4ff, #7b2ff7);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .leaderboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .leaderboard-item {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .leaderboard-item.phoenix {
+            background: linear-gradient(135deg, #ff3366, #ff6b6b);
+        }
+
+        .leaderboard-item.axiome {
+            background: linear-gradient(135deg, #00d4ff, #40e0d0);
+        }
+
+        .leaderboard-item.nebula {
+            background: linear-gradient(135deg, #7b2ff7, #8a2be2);
+        }
+
+        .leaderboard-item.zenith {
+            background: linear-gradient(135deg, #ffa500, #ff8c00);
+            color: white;
+        }
+
+        .leaderboard-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .leaderboard-score {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .top-scores {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            height: fit-content;
+        }
+
+        .top-scores h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .top-score-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .top-score-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-score-item.rank-1 { border-left-color: #ffa500; }
+        .top-score-item.rank-2 { border-left-color: #a0a0a0; }
+        .top-score-item.rank-3 { border-left-color: #cd7f32; }
+
+        .top-score-rank {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #718096;
+            min-width: 30px;
+        }
+
+        .top-score-rank.rank-1 { color: #ffa500; }
+        .top-score-rank.rank-2 { color: #a0a0a0; }
+        .top-score-rank.rank-3 { color: #cd7f32; }
+
+        .top-score-name {
+            flex: 1;
+            margin: 0 10px;
+            color: #2d3748;
+            font-weight: 500;
+            font-size: 0.95em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .top-score-points {
+            font-weight: bold;
+            color: #00d4ff;
+            font-size: 1em;
+        }
+
+        .top-score-house {
+            font-size: 1.2em;
+            margin-left: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-content {
+                grid-template-columns: 1fr;
+            }
+
+            .house-grid, .leaderboard {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .top-scores {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="welcome-screen">
+            <h1>⚡ Défi Mathématique</h1>
+            <p class="subtitle">Choisis ta maison et prouve ta valeur !</p>
+            
+            <input type="text" id="player-name" placeholder="Entre ton prénom..." maxlength="20" onkeypress="if(event.key==='Enter'){event.preventDefault(); const houses = document.querySelectorAll('.house-card'); if(houses.length > 0) houses[0].click();}}">
+            
+            <div class="welcome-content">
+                <div class="houses-section">
+                    <h3>Choisis ta maison :</h3>
+                    
+                    <div class="house-grid">
+                        <div class="house-card phoenix" onclick="selectHouse('phoenix')">
+                            <div class="house-icon">🔥</div>
+                            <div class="house-name">Phoenix</div>
+                            <div class="house-motto" style="color: #ff6b6b;">Passion & Courage</div>
+                            <div class="house-score" id="score-phoenix">0 points</div>
+                        </div>
+                        
+                        <div class="house-card axiome" onclick="selectHouse('axiome')">
+                            <div class="house-icon">💎</div>
+                            <div class="house-name">Axiome</div>
+                            <div class="house-motto" style="color: #40e0d0;">Logique & Précision</div>
+                            <div class="house-score" id="score-axiome">0 points</div>
+                        </div>
+                        
+                        <div class="house-card nebula" onclick="selectHouse('nebula')">
+                            <div class="house-icon">🌌</div>
+                            <div class="house-name">Nebula</div>
+                            <div class="house-motto" style="color: #8a2be2;">Créativité & Vision</div>
+                            <div class="house-score" id="score-nebula">0 points</div>
+                        </div>
+                        
+                        <div class="house-card zenith" onclick="selectHouse('zenith')">
+                            <div class="house-icon">⭐</div>
+                            <div class="house-name">Zenith</div>
+                            <div class="house-motto" style="color: #ffa500;">Excellence & Persévérance</div>
+                            <div class="house-score" id="score-zenith">0 points</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top-scores">
+                    <h3>🏆 Top 10 - Meilleurs Scores</h3>
+                    <div id="top-scores-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="game-screen" class="hidden">
+            <div class="question-header">
+                <div class="question-number" id="question-counter">Question 1/15</div>
+                <div class="timer" id="timer">⏱️ 2:00</div>
+            </div>
+
+            <div id="combo-container" class="hidden">
+                <div class="combo-display" id="combo-text"></div>
+            </div>
+
+            <div class="question-text" id="question-text"></div>
+
+            <div id="question-container"></div>
+
+            <button id="next-btn" onclick="nextQuestion()">Question suivante</button>
+        </div>
+
+        <div id="results-screen" class="hidden">
+            <h1>🏆 Résultats</h1>
+            
+            <div class="final-score" id="final-score"></div>
+
+            <div class="results-container" id="results-container"></div>
+
+            <h3 style="text-align: center; margin: 30px 0 20px 0; color: #2d3748;">Scores des Maisons</h3>
+            <div class="leaderboard">
+                <div class="leaderboard-item phoenix">
+                    <div class="leaderboard-name">🔥 Phoenix</div>
+                    <div class="leaderboard-score" id="final-phoenix">0</div>
+                </div>
+                <div class="leaderboard-item axiome">
+                    <div class="leaderboard-name">💎 Axiome</div>
+                    <div class="leaderboard-score" id="final-axiome">0</div>
+                </div>
+                <div class="leaderboard-item nebula">
+                    <div class="leaderboard-name">🌌 Nebula</div>
+                    <div class="leaderboard-score" id="final-nebula">0</div>
+                </div>
+                <div class="leaderboard-item zenith">
+                    <div class="leaderboard-name">⭐ Zenith</div>
+                    <div class="leaderboard-score" id="final-zenith">0</div>
+                </div>
+            </div>
+
+            <div class="top-scores" style="margin-top: 30px;">
+                <h3>🏆 Top 10 - Meilleurs Scores</h3>
+                <div id="top-scores-list-results"></div>
+            </div>
+
+            <button onclick="restartGame()" style="margin-top: 30px;">Rejouer</button>
+        </div>
+    </div>
+
+    <script>
+        // État du jeu
+        let playerName = '';
+        let playerHouse = '';
+        let currentQuestion = 0;
+        let score = 0;
+        let combo = 0;
+        let answers = [];
+        let questions = [];
+        let startTime;
+        let timerInterval;
+        let timeRemaining = 120; // 120 secondes = 2 minutes
+        let houseScores = {
+            phoenix: 0,
+            axiome: 0,
+            nebula: 0,
+            zenith: 0
+        };
+
+        // Générateurs de questions
+        const questionGenerators = [
+            // 1. Pourcentages - Augmenter
+            () => {
+                const percentage = [5, 10, 15, 20, 25][Math.floor(Math.random() * 5)];
+                const correctMultiplier = 1 + percentage / 100;
+                const options = [
+                    { text: `× ${correctMultiplier}`, correct: true },
+                    { text: `× ${percentage / 100}`, correct: false },
+                    { text: `× ${1 - percentage / 100}`, correct: false },
+                    { text: `+ ${percentage}`, correct: false }
+                ];
+                shuffle(options);
+                return {
+                    text: `Augmenter de ${percentage}% revient à effectuer l'opération :`,
+                    type: 'mcq',
+                    options: options,
+                    explanation: `100% + ${percentage}% = ${100 + percentage}%, soit ${correctMultiplier}`
+                };
+            },
+
+            // 2. Pourcentages - Réduire
+            () => {
+                const percentage = [5, 10, 15, 20, 25, 30][Math.floor(Math.random() * 6)];
+                const correctMultiplier = 1 - percentage / 100;
+                const options = [
+                    { text: `× ${correctMultiplier}`, correct: true },
+                    { text: `× ${percentage / 100}`, correct: false },
+                    { text: `× ${1 + percentage / 100}`, correct: false },
+                    { text: `− ${percentage}`, correct: false }
+                ];
+                shuffle(options);
+                return {
+                    text: `Réduire de ${percentage}% revient à effectuer l'opération :`,
+                    type: 'mcq',
+                    options: options,
+                    explanation: `100% − ${percentage}% = ${100 - percentage}%, soit ${correctMultiplier}`
+                };
+            },
+
+            // 3. Calcul de fraction d'une quantité
+            () => {
+                const numerators = [2, 3, 4, 5, 7, 3, 2];
+                const denominators = [5, 4, 5, 8, 10, 7, 3];
+                const idx = Math.floor(Math.random() * numerators.length);
+                const num = numerators[idx];
+                const den = denominators[idx];
+                const quantity = den * (Math.floor(Math.random() * 15) + 5);
+                const answer = (num * quantity) / den;
+                
+                return {
+                    text: `Calculer ${num}/${den} de ${quantity} (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `${quantity} × ${num}/${den} = ${quantity} ÷ ${den} × ${num} = ${answer}`
+                };
+            },
+
+            // 4. Évaluation de fonction affine
+            () => {
+                let a = Math.floor(Math.random() * 8) - 4;
+                if (a === 0) a = Math.random() < 0.5 ? 1 : -1;
+                
+                const b = Math.floor(Math.random() * 10) - 5;
+                const x = Math.floor(Math.random() * 20) - 10;
+                const answer = a * x + b;
+                
+                return {
+                    text: `La fonction f est définie par f(x) = ${a}x ${b >= 0 ? '+' : ''} ${b}. Calculer f(${x}) (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `f(${x}) = ${a} × ${x} ${b >= 0 ? '+' : ''} ${b} = ${a * x} ${b >= 0 ? '+' : ''} ${b} = ${answer}`
+                };
+            },
+
+            // 5. Multiplication par nombre décimal
+            () => {
+                const base = Math.floor(Math.random() * 500) + 100;
+                const mult = [0.5, 0.25, 0.75, 0.1, 0.2, 1.5, 2.5][Math.floor(Math.random() * 7)];
+                const result = base * mult;
+                const options = [
+                    { text: `Inférieur à ${base}`, correct: mult < 1 },
+                    { text: `Supérieur à ${base}`, correct: mult > 1 },
+                    { text: `Négatif`, correct: false },
+                    { text: `Compris entre 0 et 1`, correct: false }
+                ];
+                shuffle(options);
+                
+                return {
+                    text: `Le résultat de ${base} × ${mult} est :`,
+                    type: 'mcq',
+                    options: options,
+                    explanation: `${base} × ${mult} = ${result}, car on multiplie par un nombre ${mult < 1 ? 'inférieur à 1' : 'supérieur à 1'}`
+                };
+            },
+
+            // 6. Opérations sur nombres relatifs - Addition
+            () => {
+                const a = Math.floor(Math.random() * 20) - 10;
+                const b = Math.floor(Math.random() * 20) - 10;
+                const answer = a + b;
+                
+                return {
+                    text: `Calculer : ${a} + (${b}) (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `${a} + (${b}) = ${answer}`
+                };
+            },
+
+            // 7. Opérations sur nombres relatifs - Soustraction
+            () => {
+                const a = Math.floor(Math.random() * 20) - 10;
+                const b = Math.floor(Math.random() * 20) - 10;
+                const answer = a - b;
+                
+                return {
+                    text: `Calculer : ${a} − (${b}) (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `${a} − (${b}) = ${answer}`
+                };
+            },
+
+            // 8. Opérations sur nombres relatifs - Multiplication
+            () => {
+                const a = Math.floor(Math.random() * 10) - 5;
+                const b = Math.floor(Math.random() * 10) - 5;
+                if (a === 0 || b === 0) return questionGenerators[7]();
+                const answer = a * b;
+                
+                return {
+                    text: `Calculer : (${a}) × (${b}) (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `(${a}) × (${b}) = ${answer}`
+                };
+            },
+
+            // 9. Simplification de fractions
+            () => {
+                const pairs = [
+                    { num: 56, den: 70, simplified: '4/5', expl: '56 = 2×2×2×7 et 70 = 2×5×7, donc 56/70 = 4/5' },
+                    { num: 80, den: 240, simplified: '1/3', expl: '80 = 16×5 et 240 = 16×15, donc 80/240 = 1/3' },
+                    { num: 12, den: 18, simplified: '2/3', expl: '12 = 6×2 et 18 = 6×3, donc 12/18 = 2/3' },
+                    { num: 15, den: 25, simplified: '3/5', expl: '15 = 5×3 et 25 = 5×5, donc 15/25 = 3/5' },
+                    { num: 24, den: 36, simplified: '2/3', expl: '24 = 12×2 et 36 = 12×3, donc 24/36 = 2/3' },
+                    { num: 45, den: 60, simplified: '3/4', expl: '45 = 15×3 et 60 = 15×4, donc 45/60 = 3/4' }
+                ];
+                const chosen = pairs[Math.floor(Math.random() * pairs.length)];
+                const wrongOptions = ['1/2', '2/3', '3/4', '4/5', '1/3', '3/5', '2/5'].filter(x => x !== chosen.simplified);
+                shuffle(wrongOptions);
+                
+                const options = [
+                    { text: chosen.simplified, correct: true },
+                    { text: wrongOptions[0], correct: false },
+                    { text: wrongOptions[1], correct: false },
+                    { text: wrongOptions[2], correct: false }
+                ];
+                shuffle(options);
+                
+                return {
+                    text: `Donner la forme irréductible de ${chosen.num}/${chosen.den} :`,
+                    type: 'mcq',
+                    options: options,
+                    explanation: chosen.expl
+                };
+            },
+
+            // 10. Résolution d'équation simple
+            () => {
+                let a = Math.floor(Math.random() * 5) + 2;
+                const b = Math.floor(Math.random() * 10) - 5;
+                const c = Math.floor(Math.random() * 20) - 10;
+                const answer = (c - b) / a;
+                
+                return {
+                    text: `Résoudre l'équation : ${a}x ${b >= 0 ? '+' : ''} ${b} = ${c} (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `${a}x = ${c} − (${b}) = ${c - b}, donc x = ${c - b}/${a} = ${answer.toFixed(2)}`
+                };
+            },
+
+            // 11. Évaluation de fonction polynomiale
+            () => {
+                let a = Math.floor(Math.random() * 5) + 1;
+                const b = Math.floor(Math.random() * 10) - 5;
+                const c = Math.floor(Math.random() * 10) - 5;
+                const x = Math.floor(Math.random() * 5) + 1;
+                const answer = a * x * x + b * x + c;
+                
+                return {
+                    text: `La fonction f est définie par f(x) = ${a}x² ${b >= 0 ? '+' : ''} ${b}x ${c >= 0 ? '+' : ''} ${c}. Calculer f(${x}) (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `f(${x}) = ${a}×${x}² ${b >= 0 ? '+' : ''} ${b}×${x} ${c >= 0 ? '+' : ''} ${c} = ${a * x * x} ${b >= 0 ? '+' : ''} ${b * x} ${c >= 0 ? '+' : ''} ${c} = ${answer}`
+                };
+            },
+
+            // 12. Calcul de pourcentage d'une quantité
+            () => {
+                const percentage = [10, 20, 25, 50, 15, 30][Math.floor(Math.random() * 6)];
+                const amount = Math.floor(Math.random() * 200) + 100;
+                const answer = (amount * percentage) / 100;
+                
+                return {
+                    text: `Calculer ${percentage}% de ${amount} (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `${amount} × ${percentage}/100 = ${amount} × ${percentage / 100} = ${answer}`
+                };
+            },
+
+            // 13. Développement simple
+            () => {
+                let a = Math.floor(Math.random() * 5) + 2;
+                let b = Math.floor(Math.random() * 10) - 5;
+                let c = Math.floor(Math.random() * 10) - 5;
+                
+                if (b === 0) b = Math.random() < 0.5 ? 2 : -2;
+                if (c === 0) c = Math.random() < 0.5 ? 3 : -3;
+                
+                const options = [
+                    { text: `${a * b}x ${a * c >= 0 ? '+' : ''} ${a * c}`, correct: true },
+                    { text: `${a}x² ${b + c >= 0 ? '+' : ''} ${b + c}`, correct: false },
+                    { text: `${a * b + a * c}x`, correct: false },
+                    { text: `${a}x ${b * c >= 0 ? '+' : ''} ${b * c}`, correct: false }
+                ];
+                shuffle(options);
+                
+                return {
+                    text: `Développer : ${a}(${b}x ${c >= 0 ? '+' : ''} ${c})`,
+                    type: 'mcq',
+                    options: options,
+                    explanation: `${a}(${b}x ${c >= 0 ? '+' : ''} ${c}) = ${a}×${b}x + ${a}×(${c}) = ${a * b}x ${a * c >= 0 ? '+' : ''} ${a * c}`
+                };
+            },
+
+            // 14. Priorités opératoires
+            () => {
+                const a = Math.floor(Math.random() * 10) + 1;
+                const b = Math.floor(Math.random() * 10) + 1;
+                const c = Math.floor(Math.random() * 10) + 1;
+                const answer = a + b * c;
+                
+                return {
+                    text: `Calculer : ${a} + ${b} × ${c} (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `${a} + ${b} × ${c} = ${a} + ${b * c} = ${answer} (on multiplie d'abord)`
+                };
+            },
+
+            // 15. Puissances
+            () => {
+                const bases = [2, 3, 4, 5, 10];
+                const exponents = [2, 3, 4];
+                const base = bases[Math.floor(Math.random() * bases.length)];
+                const exp = exponents[Math.floor(Math.random() * exponents.length)];
+                const answer = Math.pow(base, exp);
+                
+                return {
+                    text: `Calculer : ${base}^${exp} (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `${base}^${exp} = ${base}${exp > 1 ? ' × ' + base : ''}${exp > 2 ? ' × ' + base : ''}${exp > 3 ? ' × ' + base : ''} = ${answer}`
+                };
+            },
+
+            // 16. Conversion d'unités - Longueur
+            () => {
+                const conversions = [
+                    { question: '1 km en mètres', answer: 1000, expl: '1 km = 1000 m' },
+                    { question: '2,5 km en mètres', answer: 2500, expl: '2,5 km = 2,5 × 1000 = 2500 m' },
+                    { question: '500 cm en mètres', answer: 5, expl: '500 cm = 500 ÷ 100 = 5 m' },
+                    { question: '3500 m en km', answer: 3.5, expl: '3500 m = 3500 ÷ 1000 = 3,5 km' },
+                    { question: '250 mm en cm', answer: 25, expl: '250 mm = 250 ÷ 10 = 25 cm' }
+                ];
+                const chosen = conversions[Math.floor(Math.random() * conversions.length)];
+                
+                return {
+                    text: `Convertir ${chosen.question} (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: chosen.answer,
+                    tolerance: 0.01,
+                    explanation: chosen.expl
+                };
+            },
+
+            // 17. Conversion d'unités - Temps
+            () => {
+                const conversions = [
+                    { question: '3 heures en minutes', answer: 180, expl: '3 h = 3 × 60 = 180 min' },
+                    { question: '90 minutes en heures', answer: 1.5, expl: '90 min = 90 ÷ 60 = 1,5 h' },
+                    { question: '2,5 heures en minutes', answer: 150, expl: '2,5 h = 2,5 × 60 = 150 min' },
+                    { question: '120 secondes en minutes', answer: 2, expl: '120 s = 120 ÷ 60 = 2 min' }
+                ];
+                const chosen = conversions[Math.floor(Math.random() * conversions.length)];
+                
+                return {
+                    text: `Convertir ${chosen.question} (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: chosen.answer,
+                    tolerance: 0.01,
+                    explanation: chosen.expl
+                };
+            },
+
+            // 18. Moyenne arithmétique
+            () => {
+                const n = Math.floor(Math.random() * 3) + 3;
+                const numbers = [];
+                for (let i = 0; i < n; i++) {
+                    numbers.push(Math.floor(Math.random() * 20) + 1);
+                }
+                const sum = numbers.reduce((a, b) => a + b, 0);
+                const answer = Math.round((sum / n) * 100) / 100;
+                
+                return {
+                    text: `Calculer la moyenne de : ${numbers.join(', ')} (arrondi au centième, résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.02,
+                    explanation: `(${numbers.join(' + ')}) ÷ ${n} = ${sum} ÷ ${n} = ${answer}`
+                };
+            },
+
+            // 19. Appartenance à une droite
+            () => {
+                const a = Math.floor(Math.random() * 5) + 1;
+                const b = Math.floor(Math.random() * 10) - 5;
+                const x = Math.floor(Math.random() * 10) - 5;
+                const yCorrect = a * x + b;
+                const yWrong = yCorrect + (Math.random() < 0.5 ? 3 : -3);
+                const isCorrect = Math.random() < 0.5;
+                const y = isCorrect ? yCorrect : yWrong;
+                
+                const options = [
+                    { text: 'Vrai', correct: isCorrect },
+                    { text: 'Faux', correct: !isCorrect }
+                ];
+                
+                return {
+                    text: `La droite (D) a pour équation y = ${a}x ${b >= 0 ? '+' : ''} ${b}. Le point A(${x} ; ${y}) appartient à (D).`,
+                    type: 'mcq',
+                    options: options,
+                    explanation: `${a} × ${x} ${b >= 0 ? '+' : ''} ${b} = ${yCorrect}. ${isCorrect ? 'Le point appartient bien à la droite.' : `Le point n'appartient pas à la droite car ${y} ≠ ${yCorrect}.`}`
+                };
+            },
+
+            // 20. Arrondi au centième
+            () => {
+                const num = (Math.random() * 100 + 10).toFixed(4);
+                const answer = parseFloat(parseFloat(num).toFixed(2));
+                
+                return {
+                    text: `Arrondir ${num} au centième (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.001,
+                    explanation: `${num} ≈ ${answer} au centième près`
+                };
+            },
+
+            // 21. Arrondi à l'unité
+            () => {
+                const num = (Math.random() * 100 + 50).toFixed(2);
+                const answer = Math.round(parseFloat(num));
+                
+                return {
+                    text: `Arrondir ${num} à l'unité (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.001,
+                    explanation: `${num} ≈ ${answer} à l'unité près`
+                };
+            },
+
+            // 22. Proportionnalité - Prix unitaire
+            () => {
+                const quantity = [3, 5, 8, 10][Math.floor(Math.random() * 4)];
+                const totalPrice = (Math.floor(Math.random() * 20) + 10) * quantity;
+                const answer = totalPrice / quantity;
+                
+                return {
+                    text: `${quantity} articles coûtent ${totalPrice} €. Quel est le prix d'un article ? (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `Prix unitaire = ${totalPrice} ÷ ${quantity} = ${answer} €`
+                };
+            },
+
+            // 23. Taux d'évolution
+            () => {
+                const valInit = Math.floor(Math.random() * 50) + 50;
+                const valFinal = Math.floor(Math.random() * 50) + 30;
+                const answer = Math.round(((valFinal - valInit) / valInit) * 10000) / 100;
+                
+                return {
+                    text: `Calculer le taux d'évolution de ${valInit} à ${valFinal} (en %, arrondi au centième, résultat sans unité ni symbole %)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.5,
+                    explanation: `((${valFinal} − ${valInit}) ÷ ${valInit}) × 100 = ${answer}%`
+                };
+            },
+
+            // 24. Vitesse moyenne
+            () => {
+                const distance = [120, 150, 200, 250, 300][Math.floor(Math.random() * 5)];
+                const time = [2, 2.5, 3, 4][Math.floor(Math.random() * 4)];
+                const answer = distance / time;
+                
+                return {
+                    text: `Calculer la vitesse moyenne pour parcourir ${distance} km en ${time} h (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.1,
+                    explanation: `Vitesse = ${distance} ÷ ${time} = ${answer} km/h`
+                };
+            },
+
+            // 25. TVA - Calcul TTC
+            () => {
+                const ht = Math.floor(Math.random() * 200) + 100;
+                const tva = [5.5, 10, 20][Math.floor(Math.random() * 3)];
+                const answer = Math.round(ht * (1 + tva / 100) * 100) / 100;
+                
+                return {
+                    text: `Prix HT = ${ht} €, TVA = ${tva}%. Calculer le prix TTC (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.1,
+                    explanation: `Prix TTC = ${ht} × ${1 + tva / 100} = ${answer} €`
+                };
+            },
+
+            // 26. Factorisation simple
+            () => {
+                const a = Math.floor(Math.random() * 4) + 2;
+                const b = Math.floor(Math.random() * 8) + 2;
+                const c = Math.floor(Math.random() * 8) + 2;
+                
+                const options = [
+                    { text: `${a}(${b} + ${c})`, correct: true },
+                    { text: `${a + b} × ${c}`, correct: false },
+                    { text: `${a}(${b} × ${c})`, correct: false },
+                    { text: `${b}(${a} + ${c})`, correct: false }
+                ];
+                shuffle(options);
+                
+                return {
+                    text: `Factoriser : ${a * b} + ${a * c}`,
+                    type: 'mcq',
+                    options: options,
+                    explanation: `${a * b} + ${a * c} = ${a} × ${b} + ${a} × ${c} = ${a}(${b} + ${c})`
+                };
+            },
+
+            // 27. Périmètre d'un rectangle
+            () => {
+                const L = Math.floor(Math.random() * 15) + 5;
+                const l = Math.floor(Math.random() * 10) + 3;
+                const answer = 2 * (L + l);
+                
+                return {
+                    text: `Calculer le périmètre d'un rectangle de longueur ${L} cm et largeur ${l} cm (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `Périmètre = 2 × (${L} + ${l}) = 2 × ${L + l} = ${answer} cm`
+                };
+            },
+
+            // 28. Aire d'un rectangle
+            () => {
+                const L = Math.floor(Math.random() * 15) + 5;
+                const l = Math.floor(Math.random() * 10) + 3;
+                const answer = L * l;
+                
+                return {
+                    text: `Calculer l'aire d'un rectangle de longueur ${L} m et largeur ${l} m (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `Aire = ${L} × ${l} = ${answer} m²`
+                };
+            },
+
+            // 29. Aire d'un triangle
+            () => {
+                const b = Math.floor(Math.random() * 12) + 4;
+                const h = Math.floor(Math.random() * 10) + 3;
+                const answer = (b * h) / 2;
+                
+                return {
+                    text: `Calculer l'aire d'un triangle de base ${b} cm et hauteur ${h} cm (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `Aire = (${b} × ${h}) ÷ 2 = ${answer} cm²`
+                };
+            },
+
+            // 30. Périmètre d'un cercle
+            () => {
+                const r = Math.floor(Math.random() * 8) + 2;
+                const answer = Math.round(2 * Math.PI * r * 100) / 100;
+                
+                return {
+                    text: `Calculer le périmètre d'un cercle de rayon ${r} cm (arrondi au centième, utiliser π ≈ 3,14, résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.5,
+                    explanation: `Périmètre = 2 × π × ${r} ≈ 2 × 3,14 × ${r} ≈ ${answer} cm`
+                };
+            },
+
+            // 31. Aire d'un disque
+            () => {
+                const r = Math.floor(Math.random() * 6) + 2;
+                const answer = Math.round(Math.PI * r * r * 100) / 100;
+                
+                return {
+                    text: `Calculer l'aire d'un disque de rayon ${r} cm (arrondi au centième, utiliser π ≈ 3,14, résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.5,
+                    explanation: `Aire = π × ${r}² ≈ 3,14 × ${r * r} ≈ ${answer} cm²`
+                };
+            },
+
+            // 32. Volume d'un pavé droit
+            () => {
+                const L = Math.floor(Math.random() * 8) + 3;
+                const l = Math.floor(Math.random() * 6) + 2;
+                const h = Math.floor(Math.random() * 5) + 2;
+                const answer = L * l * h;
+                
+                return {
+                    text: `Calculer le volume d'un pavé droit de dimensions ${L} cm × ${l} cm × ${h} cm (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `Volume = ${L} × ${l} × ${h} = ${answer} cm³`
+                };
+            },
+
+            // 33. Théorème de Pythagore - Calcul hypoténuse
+            () => {
+                const a = [3, 6, 8, 5][Math.floor(Math.random() * 4)];
+                const b = [4, 8, 6, 12][Math.floor(Math.random() * 4)];
+                const answer = Math.round(Math.sqrt(a * a + b * b) * 100) / 100;
+                
+                return {
+                    text: `Triangle rectangle : côtés ${a} cm et ${b} cm. Calculer l'hypoténuse (arrondi au centième, résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.1,
+                    explanation: `Hypoténuse = √(${a}² + ${b}²) = √(${a * a} + ${b * b}) ≈ ${answer} cm`
+                };
+            },
+
+            // 34. Proportionnalité - Tableau
+            () => {
+                const a = Math.floor(Math.random() * 5) + 2;
+                const b = Math.floor(Math.random() * 8) + 3;
+                const x = Math.floor(Math.random() * 6) + 4;
+                const answer = (b * x) / a;
+                
+                return {
+                    text: `Si ${a} kg coûtent ${b} €, combien coûtent ${x} kg ? (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.1,
+                    explanation: `Prix pour ${x} kg = (${b} × ${x}) ÷ ${a} = ${answer} €`
+                };
+            },
+
+            // 35. Échelle
+            () => {
+                const echelle = [10000, 20000, 50000, 100000][Math.floor(Math.random() * 4)];
+                const distCarte = [2, 3, 4, 5][Math.floor(Math.random() * 4)];
+                const answer = (distCarte * echelle) / 100;
+                
+                return {
+                    text: `Sur une carte à l'échelle 1/${echelle}, ${distCarte} cm représentent quelle distance réelle en mètres ? (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 1,
+                    explanation: `Distance réelle = ${distCarte} × ${echelle} = ${distCarte * echelle} cm = ${answer} m`
+                };
+            },
+
+            // 36. Probabilité simple
+            () => {
+                const total = [6, 8, 10, 12][Math.floor(Math.random() * 4)];
+                const favorable = Math.floor(Math.random() * (total - 2)) + 1;
+                const answer = Math.round((favorable / total) * 1000) / 1000;
+                
+                return {
+                    text: `Il y a ${favorable} boules rouges dans un sac de ${total} boules. Quelle est la probabilité de tirer une rouge ? (arrondi au millième, résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `Probabilité = ${favorable}/${total} = ${answer}`
+                };
+            },
+
+            // 37. Notation scientifique - Conversion
+            () => {
+                const bases = [2.5, 3.2, 4.5, 5.8, 7.3];
+                const base = bases[Math.floor(Math.random() * bases.length)];
+                const exp = Math.floor(Math.random() * 5) + 2;
+                const answer = base * Math.pow(10, exp);
+                
+                return {
+                    text: `Convertir ${base} × 10^${exp} en nombre décimal (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 1,
+                    explanation: `${base} × 10^${exp} = ${answer}`
+                };
+            },
+
+            // 38. Suite arithmétique - Terme suivant
+            () => {
+                const u0 = Math.floor(Math.random() * 20) + 5;
+                const r = Math.floor(Math.random() * 10) - 5;
+                if (r === 0) return questionGenerators[37]();
+                const answer = u0 + r;
+                
+                return {
+                    text: `Suite arithmétique : premier terme = ${u0}, raison = ${r}. Calculer le 2ème terme (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `Terme suivant = ${u0} + ${r} = ${answer}`
+                };
+            },
+
+            // 39. Développement double
+            () => {
+                const a = Math.floor(Math.random() * 4) + 2;
+                const b = Math.floor(Math.random() * 4) + 2;
+                const answer = a * a + 2 * a * b + b * b;
+                
+                return {
+                    text: `Développer (${a} + ${b})² (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `(${a} + ${b})² = ${a}² + 2×${a}×${b} + ${b}² = ${a * a} + ${2 * a * b} + ${b * b} = ${answer}`
+                };
+            },
+
+            // 40. Médiane simple
+            () => {
+                const n = Math.random() < 0.5 ? 5 : 7;
+                const numbers = [];
+                for (let i = 0; i < n; i++) {
+                    numbers.push(Math.floor(Math.random() * 20) + 1);
+                }
+                numbers.sort((a, b) => a - b);
+                const answer = numbers[Math.floor(n / 2)];
+                
+                return {
+                    text: `Trouver la médiane de : ${numbers.join(', ')} (résultat sans unité)`,
+                    type: 'numeric',
+                    answer: answer,
+                    tolerance: 0.01,
+                    explanation: `Série ordonnée : ${numbers.join(', ')}. La médiane est ${answer}`
+                };
+            }
+        ];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function generateQuestions() {
+            questions = [];
+            const usedGenerators = [];
+            
+            // S'assurer d'avoir au moins 15 générateurs différents
+            while (questions.length < 15) {
+                // Créer une copie mélangée des générateurs
+                const availableGenerators = [...questionGenerators];
+                shuffle(availableGenerators);
+                
+                for (const generator of availableGenerators) {
+                    if (questions.length >= 15) break;
+                    
+                    // Générer la question
+                    const question = generator();
+                    
+                    // Vérifier que cette question n'a pas déjà été générée (contenu différent)
+                    const isDuplicate = questions.some(q => q.text === question.text);
+                    
+                    if (!isDuplicate) {
+                        questions.push(question);
+                    }
+                }
+                
+                // Si on n'arrive pas à avoir 15 questions uniques après plusieurs tentatives
+                // On accepte des questions similaires mais avec des valeurs différentes
+                if (questions.length < 15 && usedGenerators.length > 50) {
+                    break;
+                }
+                usedGenerators.push(1);
+            }
+        }
+
+        async function loadScores() {
+            console.log('Chargement des scores...');
+            try {
+                for (const house of ['phoenix', 'axiome', 'nebula', 'zenith']) {
+                    const result = await window.storage.get(`house_${house}`, true);
+                    if (result && result.value) {
+                        houseScores[house] = parseInt(result.value);
+                        console.log(`Score chargé pour ${house}: ${houseScores[house]}`);
+                    }
+                }
+                updateScoreDisplay();
+                await loadTopScores();
+            } catch (error) {
+                console.log('Première utilisation - initialisation des scores', error);
+            }
+        }
+
+        async function loadTopScores() {
+            console.log('Chargement du top scores...');
+            try {
+                const result = await window.storage.get('top_scores', true);
+                let topScores = [];
+                if (result && result.value) {
+                    topScores = JSON.parse(result.value);
+                    console.log('Top scores chargés:', topScores);
+                } else {
+                    console.log('Aucun top score trouvé');
+                }
+                displayTopScores(topScores);
+            } catch (error) {
+                console.log('Pas encore de meilleurs scores', error);
+                displayTopScores([]);
+            }
+        }
+
+        function displayTopScores(topScores) {
+            const containers = [
+                document.getElementById('top-scores-list'),
+                document.getElementById('top-scores-list-results')
+            ];
+
+            console.log('Affichage des scores:', topScores);
+
+            if (!topScores || topScores.length === 0) {
+                const emptyHTML = '<div style="text-align: center; color: #718096; padding: 20px; font-size: 0.9em;">Aucun score enregistré<br>Sois le premier à jouer !</div>';
+                containers.forEach(container => {
+                    if (container) container.innerHTML = emptyHTML;
+                });
+                return;
+            }
+
+            const houseIcons = {
+                phoenix: '🔥',
+                axiome: '💎',
+                nebula: '🌌',
+                zenith: '⭐'
+            };
+
+            const html = topScores.map((score, index) => {
+                const rankClass = index < 3 ? `rank-${index + 1}` : '';
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                return `
+                    <div class="top-score-item ${rankClass}">
+                        <div class="top-score-rank ${rankClass}">${medal || (index + 1)}</div>
+                        <div class="top-score-name">${score.name}</div>
+                        <div class="top-score-house">${houseIcons[score.house] || '🏠'}</div>
+                        <div class="top-score-points">${score.score} pts</div>
+                    </div>
+                `;
+            }).join('');
+
+            containers.forEach(container => {
+                if (container) {
+                    container.innerHTML = html;
+                    console.log('Container mis à jour:', container.id);
+                }
+            });
+        }
+
+        async function saveTopScore(name, house, score) {
+            console.log(`Sauvegarde du top score: ${name} (${house}) - ${score} pts`);
+            try {
+                let topScores = [];
+                const result = await window.storage.get('top_scores', true);
+                if (result && result.value) {
+                    topScores = JSON.parse(result.value);
+                    console.log('Scores existants:', topScores);
+                }
+
+                topScores.push({ name, house, score, date: Date.now() });
+                topScores.sort((a, b) => b.score - a.score);
+                topScores = topScores.slice(0, 10);
+
+                console.log('Nouveaux top scores:', topScores);
+
+                await window.storage.set('top_scores', JSON.stringify(topScores), true);
+                console.log('Top scores sauvegardés avec succès');
+                
+                // Recharger immédiatement l'affichage
+                displayTopScores(topScores);
+            } catch (error) {
+                console.error('Erreur de sauvegarde du top score:', error);
+            }
+        }
+
+        async function saveScore(house, points) {
+            console.log(`Sauvegarde de ${points} points pour ${house}`);
+            houseScores[house] += points;
+            try {
+                await window.storage.set(`house_${house}`, houseScores[house].toString(), true);
+                console.log(`Score de ${house} sauvegardé: ${houseScores[house]}`);
+            } catch (error) {
+                console.error('Erreur de sauvegarde du score de maison:', error);
+            }
+            updateScoreDisplay();
+        }
+
+        function updateScoreDisplay() {
+            console.log('Mise à jour de l\'affichage des scores:', houseScores);
+            for (const house in houseScores) {
+                const element = document.getElementById(`score-${house}`);
+                if (element) {
+                    element.textContent = `${houseScores[house]} points`;
+                    console.log(`Affichage mis à jour pour ${house}: ${houseScores[house]}`);
+                } else {
+                    console.log(`Élément score-${house} non trouvé`);
+                }
+                const finalElement = document.getElementById(`final-${house}`);
+                if (finalElement) {
+                    finalElement.textContent = houseScores[house];
+                }
+            }
+        }
+
+        function selectHouse(house) {
+            const nameInput = document.getElementById('player-name');
+            if (!nameInput.value.trim()) {
+                alert('Entre ton prénom d\'abord ! ⚡');
+                nameInput.focus();
+                return;
+            }
+            
+            playerName = nameInput.value.trim();
+            playerHouse = house;
+            startGame();
+        }
+
+        function startGame() {
+            generateQuestions();
+            currentQuestion = 0;
+            score = 0;
+            combo = 0;
+            answers = [];
+            timeRemaining = 120; // Réinitialiser à 120 secondes
+            
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            displayQuestion();
+        }
+
+        function updateTimer() {
+            timeRemaining--;
+            
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = `⏱️ ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Changer la couleur quand il reste moins de 30 secondes
+            if (timeRemaining <= 30) {
+                timerElement.style.color = '#ff3366';
+                if (timeRemaining <= 10) {
+                    timerElement.style.animation = 'pulse 0.5s infinite';
+                }
+            }
+            
+            // Temps écoulé
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                endGameTimeOut();
+            }
+        }
+
+        async function endGameTimeOut() {
+            // Arrêter le timer
+            clearInterval(timerInterval);
+            
+            console.log('=== FIN PAR TIMEOUT ===');
+            console.log('Score obtenu:', score);
+            console.log('Maison:', playerHouse);
+            console.log('Joueur:', playerName);
+            
+            // Sauvegarder les scores même en cas de timeout
+            await saveScore(playerHouse, score);
+            await saveTopScore(playerName, playerHouse, score);
+            
+            // Attendre un peu pour que les sauvegardes soient terminées
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            // Recharger les scores
+            await loadScores();
+            
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+            
+            document.getElementById('final-score').innerHTML = `
+                ⏰ <strong>Temps écoulé !</strong><br>
+                ${playerName}, tu as gagné <strong>${score} points</strong> pour ${getHouseName(playerHouse)} !<br>
+                <span style="font-size: 0.7em;">Tu as répondu à ${currentQuestion} question(s) sur 15</span>
+            `;
+            
+            const resultsContainer = document.getElementById('results-container');
+            resultsContainer.innerHTML = '';
+            
+            answers.forEach((answer, index) => {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = `result-item ${answer.correct ? 'correct' : 'incorrect'}`;
+                
+                resultDiv.innerHTML = `
+                    <div class="result-question">
+                        ${answer.correct ? '✅' : '❌'} Question ${index + 1} ${answer.points > 1 ? `(+${answer.points} pts)` : ''}
+                    </div>
+                    <div style="margin: 10px 0;">${questions[index].text}</div>
+                    <div class="result-answer">
+                        Ta réponse : ${answer.userAnswer}<br>
+                        ${answer.explanation}
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(resultDiv);
+            });
+            
+            console.log('=== Scores après timeout ===');
+            console.log('Scores des maisons:', houseScores);
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('question-counter').textContent = `Question ${currentQuestion + 1}/15`;
+            document.getElementById('question-text').textContent = question.text;
+            
+            const container = document.getElementById('question-container');
+            container.innerHTML = '';
+            
+            if (question.type === 'mcq') {
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                question.options.forEach((option, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'option';
+                    optionDiv.textContent = option.text;
+                    optionDiv.onclick = () => selectOption(index);
+                    optionDiv.dataset.index = index;
+                    optionsDiv.appendChild(optionDiv);
+                });
+                
+                container.appendChild(optionsDiv);
+            } else if (question.type === 'numeric') {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = 'numeric-answer';
+                input.placeholder = 'Ta réponse...';
+                input.step = 'any';
+                
+                // Ajouter la validation par touche Entrée
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        nextQuestion();
+                    }
+                });
+                
+                container.appendChild(input);
+                
+                // Focus automatique sur l'input
+                setTimeout(() => input.focus(), 100);
+            }
+            
+            updateComboDisplay();
+        }
+
+        function selectOption(index) {
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            const selected = document.querySelector(`.option[data-index="${index}"]`);
+            if (selected) {
+                selected.classList.add('selected');
+            }
+        }
+
+        function nextQuestion() {
+            const question = questions[currentQuestion];
+            let userAnswer;
+            let isCorrect = false;
+            
+            if (question.type === 'mcq') {
+                const selected = document.querySelector('.option.selected');
+                if (!selected) {
+                    alert('Choisis une réponse ! 🎯');
+                    return;
+                }
+                const index = parseInt(selected.dataset.index);
+                userAnswer = question.options[index].text;
+                isCorrect = question.options[index].correct;
+            } else if (question.type === 'numeric') {
+                const input = document.getElementById('numeric-answer');
+                if (!input.value) {
+                    alert('Entre une réponse ! 🎯');
+                    return;
+                }
+                userAnswer = parseFloat(input.value);
+                isCorrect = Math.abs(userAnswer - question.answer) <= question.tolerance;
+            }
+            
+            // Calcul des points avec combo
+            let points = 0;
+            if (isCorrect) {
+                combo++;
+                let multiplier = 1;
+                if (combo >= 10) multiplier = 2.5;
+                else if (combo >= 5) multiplier = 2;
+                else if (combo >= 3) multiplier = 1.5;
+                
+                points = Math.round(1 * multiplier);
+                score += points;
+            } else {
+                combo = 0;
+            }
+            
+            answers.push({
+                question: question.text,
+                userAnswer: userAnswer,
+                correct: isCorrect,
+                explanation: question.explanation,
+                points: points
+            });
+            
+            currentQuestion++;
+            
+            if (currentQuestion < 15) {
+                displayQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function updateComboDisplay() {
+            const comboContainer = document.getElementById('combo-container');
+            const comboText = document.getElementById('combo-text');
+            
+            if (combo >= 3) {
+                comboContainer.classList.remove('hidden');
+                let multiplier = 1;
+                if (combo >= 10) multiplier = 2.5;
+                else if (combo >= 5) multiplier = 2;
+                else if (combo >= 3) multiplier = 1.5;
+                
+                comboText.textContent = `🔥 COMBO ×${multiplier} ! ${combo} bonnes réponses !`;
+            } else {
+                comboContainer.classList.add('hidden');
+            }
+        }
+
+        async function endGame() {
+            clearInterval(timerInterval);
+            
+            console.log('=== FIN DE PARTIE ===');
+            console.log('Score obtenu:', score);
+            console.log('Maison:', playerHouse);
+            console.log('Joueur:', playerName);
+            
+            // Sauvegarder les scores de manière séquentielle
+            await saveScore(playerHouse, score);
+            await saveTopScore(playerName, playerHouse, score);
+            
+            // Attendre un peu pour que les sauvegardes soient terminées
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            // Recharger les scores pour afficher les nouvelles valeurs
+            await loadScores();
+            
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+            
+            const elapsed = 120 - timeRemaining;
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            
+            document.getElementById('final-score').innerHTML = `
+                ${playerName}, tu as gagné <strong>${score} points</strong> pour ${getHouseName(playerHouse)} !<br>
+                <span style="font-size: 0.7em;">Temps : ${minutes}:${seconds.toString().padStart(2, '0')} - Toutes les questions répondues ! 🎉</span>
+            `;
+            
+            const resultsContainer = document.getElementById('results-container');
+            resultsContainer.innerHTML = '';
+            
+            answers.forEach((answer, index) => {
+                const resultDiv = document.createElement('div');
+                resultDiv.className = `result-item ${answer.correct ? 'correct' : 'incorrect'}`;
+                
+                resultDiv.innerHTML = `
+                    <div class="result-question">
+                        ${answer.correct ? '✅' : '❌'} Question ${index + 1} ${answer.points > 1 ? `(+${answer.points} pts)` : ''}
+                    </div>
+                    <div style="margin: 10px 0;">${questions[index].text}</div>
+                    <div class="result-answer">
+                        Ta réponse : ${answer.userAnswer}<br>
+                        ${answer.explanation}
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(resultDiv);
+            });
+            
+            console.log('=== Scores après partie ===');
+            console.log('Scores des maisons:', houseScores);
+        }
+
+        function getHouseName(house) {
+            const names = {
+                phoenix: '🔥 Phoenix',
+                axiome: '💎 Axiome',
+                nebula: '🌌 Nebula',
+                zenith: '⭐ Zenith'
+            };
+            return names[house];
+        }
+
+        function restartGame() {
+            location.reload();
+        }
+
+        // Initialisation
+        loadScores();
+    </script>
+</body>
+</html>
