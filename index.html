@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Défi des Quatre Maisons - Maths</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -579,6 +584,26 @@
     </div>
 
     <script>
+        // ===== CONFIGURATION FIREBASE =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyCs7Xk5gh7WFNs3DVzIQ4AQsmZVGpf0SO0",
+            authDomain: "math-game-a43d6.firebaseapp.com",
+            databaseURL: "https://math-game-a43d6-default-rtdb.firebaseio.com",
+            projectId: "math-game-a43d6",
+            storageBucket: "math-game-a43d6.firebasestorage.app",
+            messagingSenderId: "295807036015",
+            appId: "1:295807036015:web:840223907e097b08fd3b9a",
+            measurementId: "G-5QGT483Z7T"
+        };
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        console.log('🔥 Firebase initialisé avec succès');
+        
+        // ===== CODE DU JEU =====
+        
         // État du jeu
         let playerName = '';
         let playerHouse = '';
@@ -597,6 +622,10 @@
             zenith: 0
         };
 
+        // Vérifier si window.storage est disponible
+        console.log('window.storage disponible ?', typeof window.storage !== 'undefined');
+        
+        // Fonction de test du storage
         // Générateurs de questions
         const questionGenerators = [
             // 1. Pourcentages - Augmenter
@@ -1326,36 +1355,54 @@
         }
 
         async function loadScores() {
-            console.log('Chargement des scores...');
+            console.log('=== CHARGEMENT DES SCORES DEPUIS FIREBASE ===');
             try {
-                for (const house of ['phoenix', 'axiome', 'nebula', 'zenith']) {
-                    const result = await window.storage.get(`house_${house}`, true);
-                    if (result && result.value) {
-                        houseScores[house] = parseInt(result.value);
-                        console.log(`Score chargé pour ${house}: ${houseScores[house]}`);
-                    }
+                // Charger les scores des maisons depuis Firebase
+                const scoresRef = database.ref('houseScores');
+                const snapshot = await scoresRef.once('value');
+                const data = snapshot.val();
+                
+                if (data) {
+                    houseScores = {
+                        phoenix: data.phoenix || 0,
+                        axiome: data.axiome || 0,
+                        nebula: data.nebula || 0,
+                        zenith: data.zenith || 0
+                    };
+                    console.log('✅ Scores chargés depuis Firebase:', houseScores);
+                } else {
+                    console.log('ℹ️ Aucun score dans Firebase, initialisation à 0');
+                    houseScores = { phoenix: 0, axiome: 0, nebula: 0, zenith: 0 };
+                    // Initialiser Firebase avec des scores à 0
+                    await scoresRef.set(houseScores);
                 }
+                
+                console.log('📊 État final houseScores:', JSON.stringify(houseScores));
+                
+                // Attendre un peu que le DOM soit bien chargé
+                await new Promise(resolve => setTimeout(resolve, 50));
                 updateScoreDisplay();
+                
                 await loadTopScores();
             } catch (error) {
-                console.log('Première utilisation - initialisation des scores', error);
+                console.error('❌ Erreur lors du chargement depuis Firebase:', error);
+                // Initialiser à 0 en cas d'erreur
+                houseScores = { phoenix: 0, axiome: 0, nebula: 0, zenith: 0 };
+                updateScoreDisplay();
             }
         }
 
         async function loadTopScores() {
-            console.log('Chargement du top scores...');
+            console.log('Chargement du top scores depuis Firebase...');
             try {
-                const result = await window.storage.get('top_scores', true);
-                let topScores = [];
-                if (result && result.value) {
-                    topScores = JSON.parse(result.value);
-                    console.log('Top scores chargés:', topScores);
-                } else {
-                    console.log('Aucun top score trouvé');
-                }
+                const topScoresRef = database.ref('topScores');
+                const snapshot = await topScoresRef.once('value');
+                const topScores = snapshot.val() || [];
+                
+                console.log('Top scores chargés depuis Firebase:', topScores);
                 displayTopScores(topScores);
             } catch (error) {
-                console.log('Pas encore de meilleurs scores', error);
+                console.error('Erreur lors du chargement des top scores:', error);
                 displayTopScores([]);
             }
         }
@@ -1405,14 +1452,13 @@
         }
 
         async function saveTopScore(name, house, score) {
-            console.log(`Sauvegarde du top score: ${name} (${house}) - ${score} pts`);
+            console.log(`Sauvegarde du top score dans Firebase: ${name} (${house}) - ${score} pts`);
             try {
-                let topScores = [];
-                const result = await window.storage.get('top_scores', true);
-                if (result && result.value) {
-                    topScores = JSON.parse(result.value);
-                    console.log('Scores existants:', topScores);
-                }
+                const topScoresRef = database.ref('topScores');
+                const snapshot = await topScoresRef.once('value');
+                let topScores = snapshot.val() || [];
+
+                console.log('Scores existants:', topScores);
 
                 topScores.push({ name, house, score, date: Date.now() });
                 topScores.sort((a, b) => b.score - a.score);
@@ -1420,43 +1466,59 @@
 
                 console.log('Nouveaux top scores:', topScores);
 
-                await window.storage.set('top_scores', JSON.stringify(topScores), true);
-                console.log('Top scores sauvegardés avec succès');
+                await topScoresRef.set(topScores);
+                console.log('✅ Top scores sauvegardés dans Firebase');
                 
                 // Recharger immédiatement l'affichage
                 displayTopScores(topScores);
             } catch (error) {
-                console.error('Erreur de sauvegarde du top score:', error);
+                console.error('❌ Erreur de sauvegarde du top score dans Firebase:', error);
             }
         }
 
         async function saveScore(house, points) {
-            console.log(`Sauvegarde de ${points} points pour ${house}`);
+            console.log(`Sauvegarde de ${points} points pour ${house} dans Firebase`);
+            console.log(`Score actuel de ${house}: ${houseScores[house]}`);
             houseScores[house] += points;
+            console.log(`Nouveau score de ${house}: ${houseScores[house]}`);
+            
             try {
-                await window.storage.set(`house_${house}`, houseScores[house].toString(), true);
-                console.log(`Score de ${house} sauvegardé: ${houseScores[house]}`);
+                // Sauvegarder dans Firebase
+                const scoresRef = database.ref('houseScores');
+                await scoresRef.update({
+                    [house]: houseScores[house]
+                });
+                console.log(`✅ Score de ${house} sauvegardé dans Firebase: ${houseScores[house]}`);
             } catch (error) {
-                console.error('Erreur de sauvegarde du score de maison:', error);
+                console.error('❌ Erreur de sauvegarde du score de maison dans Firebase:', error);
             }
             updateScoreDisplay();
         }
 
         function updateScoreDisplay() {
-            console.log('Mise à jour de l\'affichage des scores:', houseScores);
+            console.log('=== MISE À JOUR AFFICHAGE ===');
+            console.log('Scores à afficher:', JSON.stringify(houseScores));
+            
             for (const house in houseScores) {
+                // Écran d'accueil
                 const element = document.getElementById(`score-${house}`);
                 if (element) {
                     element.textContent = `${houseScores[house]} points`;
-                    console.log(`Affichage mis à jour pour ${house}: ${houseScores[house]}`);
+                    console.log(`✅ Mis à jour score-${house}: ${houseScores[house]} points`);
                 } else {
-                    console.log(`Élément score-${house} non trouvé`);
+                    console.log(`❌ Élément score-${house} NON TROUVÉ dans le DOM`);
                 }
+                
+                // Écran de résultats
                 const finalElement = document.getElementById(`final-${house}`);
                 if (finalElement) {
                     finalElement.textContent = houseScores[house];
+                    console.log(`✅ Mis à jour final-${house}: ${houseScores[house]}`);
+                } else {
+                    console.log(`ℹ️ Élément final-${house} non trouvé (normal si pas sur écran résultats)`);
                 }
             }
+            console.log('=== FIN MISE À JOUR ===');
         }
 
         function selectHouse(house) {
@@ -1764,7 +1826,10 @@
         }
 
         // Initialisation
-        loadScores();
+        window.addEventListener('DOMContentLoaded', async () => {
+            console.log('=== INITIALISATION DU JEU AVEC FIREBASE ===');
+            await loadScores();
+        });
     </script>
 </body>
 </html>
