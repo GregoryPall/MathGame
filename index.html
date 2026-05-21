@@ -539,6 +539,10 @@
                 <div class="question-number" id="question-counter">Question 1/15</div>
                 <div class="timer" id="timer">⏱️ 2:00</div>
             </div>
+            
+            <div id="time-bonus-indicator" style="text-align: center; margin: 10px 0; font-size: 0.9em; font-weight: bold;">
+                <span id="time-bonus-text"></span>
+            </div>
 
             <div id="combo-container" class="hidden">
                 <div class="combo-display" id="combo-text"></div>
@@ -1563,6 +1567,18 @@
             const timerElement = document.getElementById('timer');
             timerElement.textContent = `⏱️ ${minutes}:${seconds.toString().padStart(2, '0')}`;
             
+            // Afficher le bonus de temps disponible
+            const bonusText = document.getElementById('time-bonus-text');
+            if (timeRemaining > 90) {
+                bonusText.innerHTML = '⚡ <span style="color: #10b981;">Bonus rapide : +3 pts</span>';
+            } else if (timeRemaining > 60) {
+                bonusText.innerHTML = '⚡ <span style="color: #3b82f6;">Bonus moyen : +2 pts</span>';
+            } else if (timeRemaining > 30) {
+                bonusText.innerHTML = '⚡ <span style="color: #f59e0b;">Bonus lent : +1 pt</span>';
+            } else {
+                bonusText.innerHTML = '<span style="color: #6b7280;">Aucun bonus temps</span>';
+            }
+            
             // Changer la couleur quand il reste moins de 30 secondes
             if (timeRemaining <= 30) {
                 timerElement.style.color = '#ff3366';
@@ -1613,9 +1629,19 @@
                 const resultDiv = document.createElement('div');
                 resultDiv.className = `result-item ${answer.correct ? 'correct' : 'incorrect'}`;
                 
+                // Affichage du détail des points
+                let pointsDetail = '';
+                if (answer.correct && answer.points > 0) {
+                    pointsDetail = `(+${answer.points} pts`;
+                    if (answer.timeBonus > 0) {
+                        pointsDetail += ` dont ⚡ +${answer.timeBonus} bonus temps`;
+                    }
+                    pointsDetail += ')';
+                }
+                
                 resultDiv.innerHTML = `
                     <div class="result-question">
-                        ${answer.correct ? '✅' : '❌'} Question ${index + 1} ${answer.points > 1 ? `(+${answer.points} pts)` : ''}
+                        ${answer.correct ? '✅' : '❌'} Question ${index + 1} ${pointsDetail}
                     </div>
                     <div style="margin: 10px 0;">${questions[index].text}</div>
                     <div class="result-answer">
@@ -1711,16 +1737,35 @@
                 isCorrect = Math.abs(userAnswer - question.answer) <= question.tolerance;
             }
             
-            // Calcul des points avec combo
+            // Calcul des points avec combo ET bonus de temps
             let points = 0;
+            let timeBonus = 0;
             if (isCorrect) {
                 combo++;
+                
+                // Multiplicateur de combo
                 let multiplier = 1;
                 if (combo >= 10) multiplier = 2.5;
                 else if (combo >= 5) multiplier = 2;
                 else if (combo >= 3) multiplier = 1.5;
                 
+                // Points de base avec combo
                 points = Math.round(1 * multiplier);
+                
+                // Bonus de temps (maximum +3 points)
+                // Si temps restant > 90s : +3 pts
+                // Si temps restant > 60s : +2 pts
+                // Si temps restant > 30s : +1 pt
+                // Si temps restant ≤ 30s : 0 pt
+                if (timeRemaining > 90) {
+                    timeBonus = 3;
+                } else if (timeRemaining > 60) {
+                    timeBonus = 2;
+                } else if (timeRemaining > 30) {
+                    timeBonus = 1;
+                }
+                
+                points += timeBonus;
                 score += points;
             } else {
                 combo = 0;
@@ -1731,7 +1776,8 @@
                 userAnswer: userAnswer,
                 correct: isCorrect,
                 explanation: question.explanation,
-                points: points
+                points: points,
+                timeBonus: timeBonus
             });
             
             currentQuestion++;
@@ -1797,9 +1843,19 @@
                 const resultDiv = document.createElement('div');
                 resultDiv.className = `result-item ${answer.correct ? 'correct' : 'incorrect'}`;
                 
+                // Affichage du détail des points
+                let pointsDetail = '';
+                if (answer.correct && answer.points > 0) {
+                    pointsDetail = `(+${answer.points} pts`;
+                    if (answer.timeBonus > 0) {
+                        pointsDetail += ` dont ⚡ +${answer.timeBonus} bonus temps`;
+                    }
+                    pointsDetail += ')';
+                }
+                
                 resultDiv.innerHTML = `
                     <div class="result-question">
-                        ${answer.correct ? '✅' : '❌'} Question ${index + 1} ${answer.points > 1 ? `(+${answer.points} pts)` : ''}
+                        ${answer.correct ? '✅' : '❌'} Question ${index + 1} ${pointsDetail}
                     </div>
                     <div style="margin: 10px 0;">${questions[index].text}</div>
                     <div class="result-answer">
