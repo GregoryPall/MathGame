@@ -22,8 +22,8 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%);
-            color: #2d3748;
+            background: #0a0a1a;
+            color: #e0e0e0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -34,11 +34,11 @@
         .container {
             max-width: 900px;
             width: 100%;
-            background: white;
+            background: #1a1a2e;
             border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(123, 47, 247, 0.3);
         }
 
         h1 {
@@ -52,7 +52,7 @@
 
         .subtitle {
             text-align: center;
-            color: #718096;
+            color: #a0aec0;
             margin-bottom: 30px;
             font-size: 1.1em;
         }
@@ -72,7 +72,7 @@
         .houses-section h3 {
             text-align: center;
             margin-bottom: 20px;
-            color: #2d3748;
+            color: #e0e0e0;
             font-size: 1.2em;
         }
 
@@ -83,15 +83,16 @@
         }
 
         .house-card {
-            background: #f7fafc;
-            border-radius: 12px;
-            padding: 20px;
+            background: #1a1a2e;
+            border-radius: 15px;
+            padding: 30px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 3px solid transparent;
+            border: 2px solid;
             text-align: center;
             position: relative;
             overflow: hidden;
+            color: white;
         }
 
         .house-card::before {
@@ -105,45 +106,40 @@
             transition: opacity 0.3s ease;
         }
 
-        .house-card:hover::before {
-            opacity: 0.15;
-        }
-
         .house-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
         }
 
         .house-card.phoenix { 
-            border-color: #ff3366;
-            background: linear-gradient(135deg, rgba(255, 51, 102, 0.05), rgba(255, 107, 107, 0.03));
+            border-color: #ff6b6b;
+            box-shadow: 0 0 10px #ff6b6b;
         }
         .house-card.phoenix:hover { 
-            box-shadow: 0 8px 20px rgba(255, 51, 102, 0.3);
+            box-shadow: 0 0 20px #ff6b6b, 0 0 40px #ff6b6b, 0 0 60px #ff6b6b;
         }
         
         .house-card.axiome { 
-            border-color: #00d4ff;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(64, 224, 208, 0.03));
+            border-color: #40e0d0;
+            box-shadow: 0 0 10px #40e0d0;
         }
         .house-card.axiome:hover { 
-            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 20px #40e0d0, 0 0 40px #40e0d0, 0 0 60px #40e0d0;
         }
         
         .house-card.nebula { 
-            border-color: #7b2ff7;
-            background: linear-gradient(135deg, rgba(123, 47, 247, 0.05), rgba(138, 43, 226, 0.03));
+            border-color: #8a2be2;
+            box-shadow: 0 0 10px #8a2be2;
         }
         .house-card.nebula:hover { 
-            box-shadow: 0 8px 20px rgba(123, 47, 247, 0.3);
+            box-shadow: 0 0 20px #8a2be2, 0 0 40px #8a2be2, 0 0 60px #8a2be2;
         }
         
         .house-card.zenith { 
             border-color: #ffa500;
-            background: linear-gradient(135deg, rgba(255, 165, 0, 0.05), rgba(255, 193, 7, 0.03));
+            box-shadow: 0 0 10px #ffa500;
         }
         .house-card.zenith:hover { 
-            box-shadow: 0 8px 20px rgba(255, 165, 0, 0.3);
+            box-shadow: 0 0 20px #ffa500, 0 0 40px #ffa500, 0 0 60px #ffa500;
         }
 
         .house-icon {
@@ -155,16 +151,17 @@
             font-size: 1.1em;
             font-weight: bold;
             margin-bottom: 5px;
-            color: #2d3748;
+            color: white;
         }
 
         .house-motto {
             font-size: 0.75em;
             margin: 5px 0;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .house-score {
-            color: #718096;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 0.85em;
             margin-top: 5px;
         }
@@ -173,9 +170,9 @@
             width: 100%;
             padding: 15px;
             border-radius: 10px;
-            border: 2px solid #e2e8f0;
-            background: #f7fafc;
-            color: #2d3748;
+            border: 2px solid #2d3748;
+            background: #1a1a2e;
+            color: #e0e0e0;
             font-size: 1.1em;
             margin-bottom: 20px;
             transition: all 0.3s ease;
@@ -184,11 +181,12 @@
         input[type="text"]:focus {
             outline: none;
             border-color: #00d4ff;
-            background: white;
+            background: #252538;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
         }
 
         input[type="text"]::placeholder {
-            color: #a0aec0;
+            color: #718096;
         }
 
         button {
@@ -221,8 +219,9 @@
             align-items: center;
             margin-bottom: 30px;
             padding: 20px;
-            background: #f7fafc;
+            background: #252538;
             border-radius: 10px;
+            border: 1px solid #3a3a52;
         }
 
         .question-number {
@@ -234,7 +233,7 @@
         .timer {
             font-size: 1.5em;
             font-weight: bold;
-            color: #ff3366;
+            color: #ff6b6b;
         }
 
         .combo-display {
@@ -244,6 +243,7 @@
             border-radius: 10px;
             font-weight: bold;
             animation: pulse 1s infinite;
+            color: white;
         }
 
         @keyframes pulse {
@@ -255,11 +255,11 @@
             font-size: 1.3em;
             margin-bottom: 25px;
             line-height: 1.6;
-            background: #f7fafc;
+            background: #252538;
             padding: 20px;
             border-radius: 10px;
             border-left: 4px solid #00d4ff;
-            color: #2d3748;
+            color: #e0e0e0;
         }
 
         .options {
@@ -271,32 +271,34 @@
 
         .option {
             padding: 15px 20px;
-            background: #f7fafc;
+            background: #252538;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 2px solid #e2e8f0;
-            color: #2d3748;
+            border: 2px solid #3a3a52;
+            color: #e0e0e0;
         }
 
         .option:hover {
-            background: #edf2f7;
+            background: #2d2d42;
             border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
         }
 
         .option.selected {
-            background: rgba(0, 212, 255, 0.1);
+            background: rgba(0, 212, 255, 0.2);
             border-color: #00d4ff;
             font-weight: 600;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
         }
 
         input[type="number"] {
             width: 100%;
             padding: 15px;
             border-radius: 10px;
-            border: 2px solid #e2e8f0;
-            background: #f7fafc;
-            color: #2d3748;
+            border: 2px solid #3a3a52;
+            background: #252538;
+            color: #e0e0e0;
             font-size: 1.3em;
             text-align: center;
             margin-bottom: 20px;
@@ -305,7 +307,8 @@
         input[type="number"]:focus {
             outline: none;
             border-color: #00d4ff;
-            background: white;
+            background: #2d2d42;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
         }
 
         .results-container {
@@ -316,28 +319,28 @@
             padding: 20px;
             margin-bottom: 15px;
             border-radius: 10px;
-            background: #f7fafc;
+            background: #252538;
             border-left: 4px solid;
         }
 
         .result-item.correct {
             border-left-color: #48bb78;
-            background: rgba(72, 187, 120, 0.1);
+            background: rgba(72, 187, 120, 0.15);
         }
 
         .result-item.incorrect {
             border-left-color: #f56565;
-            background: rgba(245, 101, 101, 0.1);
+            background: rgba(245, 101, 101, 0.15);
         }
 
         .result-question {
             font-weight: bold;
             margin-bottom: 10px;
-            color: #2d3748;
+            color: #e0e0e0;
         }
 
         .result-answer {
-            color: #4a5568;
+            color: #a0aec0;
             font-size: 0.95em;
         }
 
@@ -394,14 +397,15 @@
         }
 
         .top-scores {
-            background: #f7fafc;
+            background: #252538;
             border-radius: 15px;
             padding: 25px;
             height: fit-content;
+            border: 1px solid #3a3a52;
         }
 
         .top-scores h3 {
-            color: #2d3748;
+            color: #e0e0e0;
             margin-bottom: 20px;
             text-align: center;
             font-size: 1.2em;
@@ -413,7 +417,7 @@
             align-items: center;
             padding: 10px 12px;
             margin-bottom: 8px;
-            background: white;
+            background: #1a1a2e;
             border-radius: 8px;
             border-left: 4px solid;
             transition: all 0.3s ease;
@@ -421,7 +425,7 @@
 
         .top-score-item:hover {
             transform: translateX(5px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 212, 255, 0.2);
         }
 
         .top-score-item.rank-1 { border-left-color: #ffa500; }
@@ -442,7 +446,7 @@
         .top-score-name {
             flex: 1;
             margin: 0 10px;
-            color: #2d3748;
+            color: #e0e0e0;
             font-weight: 500;
             font-size: 0.95em;
             overflow: hidden;
@@ -459,6 +463,71 @@
         .top-score-house {
             font-size: 1.2em;
             margin-left: 8px;
+        }
+
+        /* Mini-cartes pour le classement en temps réel */
+        .mini-house-card {
+            background: #252538;
+            border-radius: 10px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 2px solid;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mini-house-card.phoenix-mini {
+            border-color: #ff6b6b;
+        }
+
+        .mini-house-card.axiome-mini {
+            border-color: #40e0d0;
+        }
+
+        .mini-house-card.nebula-mini {
+            border-color: #8a2be2;
+        }
+
+        .mini-house-card.zenith-mini {
+            border-color: #ffa500;
+        }
+
+        .mini-house-card.player-house {
+            box-shadow: 0 0 15px;
+            transform: scale(1.05);
+        }
+
+        .mini-house-card.player-house.phoenix-mini {
+            box-shadow: 0 0 15px #ff6b6b;
+        }
+
+        .mini-house-card.player-house.axiome-mini {
+            box-shadow: 0 0 15px #40e0d0;
+        }
+
+        .mini-house-card.player-house.nebula-mini {
+            box-shadow: 0 0 15px #8a2be2;
+        }
+
+        .mini-house-card.player-house.zenith-mini {
+            box-shadow: 0 0 15px #ffa500;
+        }
+
+        .mini-house-icon {
+            font-size: 1.5em;
+            margin-bottom: 3px;
+        }
+
+        .mini-house-name {
+            font-size: 0.75em;
+            color: #a0aec0;
+            margin-bottom: 3px;
+        }
+
+        .mini-house-score {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: white;
         }
 
         .hidden {
@@ -548,6 +617,35 @@
                 <div class="combo-display" id="combo-text"></div>
             </div>
 
+            <!-- Classement en temps réel des maisons -->
+            <div id="live-house-ranking" style="margin: 20px 0;">
+                <div style="text-align: center; color: #a0aec0; font-size: 0.9em; margin-bottom: 10px;">
+                    🏆 Classement des Maisons
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                    <div class="mini-house-card phoenix-mini" id="mini-phoenix">
+                        <div class="mini-house-icon">🔥</div>
+                        <div class="mini-house-name">Phoenix</div>
+                        <div class="mini-house-score" id="live-phoenix">0</div>
+                    </div>
+                    <div class="mini-house-card axiome-mini" id="mini-axiome">
+                        <div class="mini-house-icon">💎</div>
+                        <div class="mini-house-name">Axiome</div>
+                        <div class="mini-house-score" id="live-axiome">0</div>
+                    </div>
+                    <div class="mini-house-card nebula-mini" id="mini-nebula">
+                        <div class="mini-house-icon">🌌</div>
+                        <div class="mini-house-name">Nebula</div>
+                        <div class="mini-house-score" id="live-nebula">0</div>
+                    </div>
+                    <div class="mini-house-card zenith-mini" id="mini-zenith">
+                        <div class="mini-house-icon">⭐</div>
+                        <div class="mini-house-name">Zenith</div>
+                        <div class="mini-house-score" id="live-zenith">0</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="question-text" id="question-text"></div>
 
             <div id="question-container"></div>
@@ -562,7 +660,7 @@
 
             <div class="results-container" id="results-container"></div>
 
-            <h3 style="text-align: center; margin: 30px 0 20px 0; color: #2d3748;">Scores des Maisons</h3>
+            <h3 style="text-align: center; margin: 30px 0 20px 0; color: #e0e0e0;">Scores des Maisons</h3>
             <div class="leaderboard">
                 <div class="leaderboard-item phoenix">
                     <div class="leaderboard-name">🔥 Phoenix</div>
@@ -1062,15 +1160,23 @@
                 };
             },
 
-            // 19. Appartenance à une droite
+            // 18. Appartenance à une droite
             () => {
-                const a = Math.floor(Math.random() * 5) + 1;
-                const b = Math.floor(Math.random() * 10) - 5;
+                let a = Math.floor(Math.random() * 5) + 1;
+                // Ajouter les cas a=1 et a=-1
+                if (Math.random() < 0.3) {
+                    a = Math.random() < 0.5 ? 1 : -1;
+                }
+                let b = Math.floor(Math.random() * 10) - 5;
+                if (b === 0) b = Math.random() < 0.5 ? 1 : -1; // Éviter b = 0
                 const x = Math.floor(Math.random() * 10) - 5;
                 const yCorrect = a * x + b;
                 const yWrong = yCorrect + (Math.random() < 0.5 ? 3 : -3);
                 const isCorrect = Math.random() < 0.5;
                 const y = isCorrect ? yCorrect : yWrong;
+                
+                // Affichage de ax avec cas spéciaux a=1 et a=-1
+                const aDisplay = a === 1 ? 'x' : a === -1 ? '−x' : `${a}x`;
                 
                 const options = [
                     { text: 'Vrai', correct: isCorrect },
@@ -1078,10 +1184,10 @@
                 ];
                 
                 return {
-                    text: `La droite (D) a pour équation y = ${a}x ${b >= 0 ? '+' : ''} ${b}. Le point A(${x} ; ${y}) appartient à (D).`,
+                    text: `La droite (D) a pour équation y = ${aDisplay} ${b >= 0 ? '+' : '−'} ${Math.abs(b)}. Le point A(${x} ; ${y}) appartient à (D).`,
                     type: 'mcq',
                     options: options,
-                    explanation: `${a} × ${x} ${b >= 0 ? '+' : ''} ${b} = ${yCorrect}. ${isCorrect ? 'Le point appartient bien à la droite.' : `Le point n'appartient pas à la droite car ${y} ≠ ${yCorrect}.`}`
+                    explanation: `${a === 1 ? '' : a === -1 ? '−' : a} × ${x} ${b >= 0 ? '+' : '−'} ${Math.abs(b)} = ${yCorrect}. ${isCorrect ? 'Le point appartient bien à la droite.' : `Le point n'appartient pas à la droite car ${y} ≠ ${yCorrect}.`}`
                 };
             },
 
@@ -1115,8 +1221,9 @@
 
             // 22. Proportionnalité - Prix unitaire
             () => {
-                const quantity = [3, 5, 8, 10][Math.floor(Math.random() * 4)];
-                const totalPrice = (Math.floor(Math.random() * 20) + 10) * quantity;
+                const quantity = Math.floor(Math.random() * 10) + 3; // 3 à 12
+                const unitPrice = Math.floor(Math.random() * 20) + 10; // 10 à 29
+                const totalPrice = unitPrice * quantity;
                 const answer = totalPrice / quantity;
                 
                 return {
@@ -1130,15 +1237,16 @@
 
             // 23. Taux d'évolution
             () => {
-                const valInit = Math.floor(Math.random() * 50) + 50;
-                const valFinal = Math.floor(Math.random() * 50) + 30;
+                const valInit = (Math.floor(Math.random() * 51) + 50) * 10; // 500 à 1000 par pas de 10
+                const variation = (Math.floor(Math.random() * 21) - 10) * 10; // -100 à +100 par pas de 10
+                const valFinal = valInit + variation;
                 const answer = Math.round(((valFinal - valInit) / valInit) * 10000) / 100;
                 
                 return {
-                    text: `Calculer le taux d'évolution de ${valInit} à ${valFinal} (en %, arrondi au centième, résultat sans unité ni symbole %)`,
+                    text: `Calculer le taux d'évolution de ${valInit} à ${valFinal} (réponse en pourcentage, arrondi au centième, résultat sans unité)`,
                     type: 'numeric',
                     answer: answer,
-                    tolerance: 0.5,
+                    tolerance: 0.01,
                     explanation: `((${valFinal} − ${valInit}) ÷ ${valInit}) × 100 = ${answer}%`
                 };
             },
@@ -1175,23 +1283,22 @@
 
             // 26. Factorisation simple
             () => {
-                const a = Math.floor(Math.random() * 4) + 2;
-                const b = Math.floor(Math.random() * 8) + 2;
-                const c = Math.floor(Math.random() * 8) + 2;
+                const a = Math.floor(Math.random() * 4) + 2; // 2 à 5
+                const b = Math.floor(Math.random() * 8) + 1; // 1 à 8
                 
                 const options = [
-                    { text: `${a}(${b} + ${c})`, correct: true },
-                    { text: `${a + b} × ${c}`, correct: false },
-                    { text: `${a}(${b} × ${c})`, correct: false },
-                    { text: `${b}(${a} + ${c})`, correct: false }
+                    { text: `${a} × (x + ${b})`, correct: true },
+                    { text: `${a}x + ${b}`, correct: false },
+                    { text: `${a} × x + ${a} × ${b}`, correct: false },
+                    { text: `(${a} + x) × ${b}`, correct: false }
                 ];
                 shuffle(options);
                 
                 return {
-                    text: `Factoriser : ${a * b} + ${a * c}`,
+                    text: `Factoriser : ${a}x + ${a * b}`,
                     type: 'mcq',
                     options: options,
-                    explanation: `${a * b} + ${a * c} = ${a} × ${b} + ${a} × ${c} = ${a}(${b} + ${c})`
+                    explanation: `${a}x + ${a * b} = ${a} × x + ${a} × ${b} = ${a} × (x + ${b})`
                 };
             },
 
@@ -1361,23 +1468,7 @@
                 };
             },
 
-            // 38. Suite arithmétique - Terme suivant
-            () => {
-                const u0 = Math.floor(Math.random() * 20) + 5;
-                const r = Math.floor(Math.random() * 10) - 5;
-                if (r === 0) return questionGenerators[37]();
-                const answer = u0 + r;
-                
-                return {
-                    text: `Suite arithmétique : premier terme = ${u0}, raison = ${r}. Calculer le 2ème terme (résultat sans unité)`,
-                    type: 'numeric',
-                    answer: answer,
-                    tolerance: 0.01,
-                    explanation: `Terme suivant = ${u0} + ${r} = ${answer}`
-                };
-            },
-
-            // 39. Développement double
+            // 36. Développement double
             () => {
                 const a = Math.floor(Math.random() * 4) + 2;
                 const b = Math.floor(Math.random() * 4) + 2;
@@ -1480,6 +1571,7 @@
                 // Attendre un peu que le DOM soit bien chargé
                 await new Promise(resolve => setTimeout(resolve, 50));
                 updateScoreDisplay();
+                updateLiveRanking();  // Mettre à jour le classement en temps réel
                 
                 await loadTopScores();
             } catch (error) {
@@ -1487,6 +1579,7 @@
                 // Initialiser à 0 en cas d'erreur
                 houseScores = { phoenix: 0, axiome: 0, nebula: 0, zenith: 0 };
                 updateScoreDisplay();
+                updateLiveRanking();  // Mettre à jour même en cas d'erreur
             }
         }
 
@@ -1591,6 +1684,7 @@
                 console.error('❌ Erreur de sauvegarde du score de maison dans Firebase:', error);
             }
             updateScoreDisplay();
+            updateLiveRanking();  // Mettre à jour le classement en temps réel
         }
 
         function updateScoreDisplay() {
@@ -1643,10 +1737,35 @@
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             
+            // Charger les scores des maisons et mettre en surbrillance la maison du joueur
+            loadScores();
+            highlightPlayerHouse();
+            
             startTime = Date.now();
             timerInterval = setInterval(updateTimer, 1000);
             
             displayQuestion();
+        }
+
+        // Mettre en surbrillance la maison du joueur dans le classement temps réel
+        function highlightPlayerHouse() {
+            const houses = ['phoenix', 'axiome', 'nebula', 'zenith'];
+            houses.forEach(house => {
+                const element = document.getElementById(`mini-${house}`);
+                if (house === playerHouse) {
+                    element.classList.add('player-house');
+                } else {
+                    element.classList.remove('player-house');
+                }
+            });
+        }
+
+        // Mettre à jour le classement en temps réel
+        function updateLiveRanking() {
+            document.getElementById('live-phoenix').textContent = houseScores.phoenix;
+            document.getElementById('live-axiome').textContent = houseScores.axiome;
+            document.getElementById('live-nebula').textContent = houseScores.nebula;
+            document.getElementById('live-zenith').textContent = houseScores.zenith;
         }
 
         function updateTimer() {
